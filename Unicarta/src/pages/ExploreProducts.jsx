@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../component/explore/ProductCard";
-import fetchFromApi from "../utils/fetchFromApi";
+import { fetchFromApi } from "../service/fetchFromApi";
 import SelectCategory from "../component/explore/SelectCategory";
 import PriceFilter from "../component/explore/PriceFilter";
 import "./ExploreProducts.css";
