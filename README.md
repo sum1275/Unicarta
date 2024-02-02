@@ -2,7 +2,7 @@
 
 Unicarta is the frontend part of a E-commerce Website
 
-!Unicarta Interface](https://i.ibb.co/qjPJbTr/1.png)
+![Unicarta Interface](https://i.ibb.co/qjPJbTr/1.png)
 ## Problem Statement
 To designing and implementing an e-commerce store with the following functionalities:
 
