@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
 const CartContext = createContext(null);
 
-
 function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [priceT, setPriceT] = useState(0);
 
   function addToCart(addedProduct) {
     let newCartValue = [];
@@ -52,6 +52,8 @@ function CartProvider({ children }) {
     removeFromCart,
     addProductQuantity,
     emptyCart,
+    priceT,
+    setPriceT,
   };
 
   return (

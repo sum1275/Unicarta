@@ -15,9 +15,10 @@ function UserInfo() {
 }
 
 function ShippingAddress() {
-  const { emptyCart, cart } = useContext(CartContext);
+  const { emptyCart, cart,setPriceT, priceT } =
+    useContext(CartContext);
   const [couponValue, setCouponValue] = useState("");
-  const [couponValid, setCouponValid] = useState(false);
+  // const [couponValid, setCouponValid] = useState(false);
 
   const [formData, setFormData] = useState({
     fname: "",
@@ -25,8 +26,9 @@ function ShippingAddress() {
     address: "",
     city: "",
     email: "",
-    coupan: "",
+    coupan: couponValue,
     cartdata: cart,
+    totalPrice:priceT
   });
 
   let navigate = useNavigate();
@@ -36,17 +38,12 @@ function ShippingAddress() {
       toast.error("Your shopping list is Emtpy");
       return;
     }
-    let totalPrice = cart.reduce((acc, cur) => {
-      return acc + cur.qty * cur.price;
-    }, 0);
-    if (totalPrice < 1) {
+
+    if (priceT < 1) {
       toast.error("Cannot process order value of zero(0).");
       return;
     }
-if(couponValid){
-  totalPrice=totalPrice-0.1*totalPrice;
-  setCouponValid(false);
-}
+
     // code test
     try {
       // Call the checkout function with userData
@@ -71,11 +68,14 @@ if(couponValid){
   const handleUserInput = (event) => {
     const { name, value } = event.target;
     if (name === "coupan") {
-      setCouponValue(value);
+      setCouponValue(value); // Update couponValue state
+      setFormData((prev) => ({ ...prev, coupan: value })); // Update coupan in formData state
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  
+  
 
   console.log({ formData });
   async function handleApplyCoupan() {
@@ -83,12 +83,15 @@ if(couponValid){
       try {
         // Assuming validateCoupon is the function that validates the coupon
         let couponResult = await validateCoupon(couponValue);
-        setCouponValid(couponResult.valid);
-        if(couponValid){
-          totalPrice=totalPrice-0.1*totalPrice;
-          setCouponValid(false);
+     
+        if (couponResult.valid) {
+          let discountedPrice = priceT - 0.1 * priceT;
+          setPriceT(discountedPrice);
+         toast.success(couponResult.message)
+        }else{
+          toast.error(couponResult.message)
         }
-        toast.success(`${couponResult.message}`);
+        
       } catch (error) {
         console.error("Error validating coupon:", error);
         // Handle error, show error message, etc.

@@ -1,17 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartProvider";
 import "./OrderSummary.css";
 
 function OrderSummary() {
-  let { cart } = useContext(CartContext);
+  let { cart, couponValid, setCouponValid, priceT, setPriceT } =
+    useContext(CartContext);
 
+  useEffect(() => {
+    let total = cart.reduce((acc, cur) => {
+      return acc + cur.qty * cur.price;
+    }, 0);
+    setPriceT(total);
+  }, [cart]);
   let allSoloProducts = cart.map((product) => {
     return <SoloBill product={product} key={product.id} />;
   });
-
-  let totalPrice = cart.reduce((acc, cur) => {
-    return acc + cur.qty * cur.price;
-  }, 0);
 
   return (
     <div className="order-summary_container">
@@ -19,7 +22,7 @@ function OrderSummary() {
       <div className="order-summary">{allSoloProducts}</div>
       <div className="order-total solo-bill">
         <p>Total</p>
-        <span>${totalPrice.toFixed(2)}</span>
+        <span>${priceT.toFixed(2)}</span>
       </div>
     </div>
   );
