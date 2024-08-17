@@ -1,22 +1,16 @@
-// react router
 import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-
-// context provider
 import CartProvider from "./context/CartProvider";
-// layout
 import RootLayout from "./layout/RootLayout";
-// pages
 import Home from "./pages/Home";
 import ExploreProduct from "./pages/ExploreProducts";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
 
-// react toast
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(

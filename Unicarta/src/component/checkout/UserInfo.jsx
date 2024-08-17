@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { useContext } from "react";
-import { CartContext } from "../../context/CartProvider";
-import "./UserInfo.css";
+import { useContext, useState } from "react";
+import {useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+
+import { CartContext } from "../../context/CartProvider";
 import { checkout, validateCoupon } from "../../service/fetchFromApi";
+import "./UserInfo.css";
+
 
 function UserInfo() {
   return (
@@ -15,10 +16,10 @@ function UserInfo() {
 }
 
 function ShippingAddress() {
-  const { emptyCart, cart,setPriceT, priceT } =
+  const { emptyCart, cart, setTotalPrice, totalPrice } =
     useContext(CartContext);
   const [couponValue, setCouponValue] = useState("");
-  // const [couponValid, setCouponValid] = useState(false);
+ 
 
   const [formData, setFormData] = useState({
     fname: "",
@@ -26,20 +27,20 @@ function ShippingAddress() {
     address: "",
     city: "",
     email: "",
-    coupan: couponValue,
+    coupon: couponValue,
     cartdata: cart,
-    totalPrice:priceT
+    totalPrice: totalPrice,
   });
 
   let navigate = useNavigate();
 
   async function checkoutHandler() {
     if (cart.length < 1) {
-      toast.error("Your shopping list is Emtpy");
+      toast.error("Your shopping list is Empty");
       return;
     }
 
-    if (priceT < 1) {
+    if (totalPrice < 1) {
       toast.error("Cannot process order value of zero(0).");
       return;
     }
@@ -67,15 +68,13 @@ function ShippingAddress() {
 
   const handleUserInput = (event) => {
     const { name, value } = event.target;
-    if (name === "coupan") {
-      setCouponValue(value); // Update couponValue state
-      setFormData((prev) => ({ ...prev, coupan: value })); // Update coupan in formData state
+    if (name === "coupon") {
+      setCouponValue(value); 
+      setFormData((prev) => ({ ...prev, coupon: value })); 
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
-  
-  
 
   console.log({ formData });
   async function handleApplyCoupan() {
@@ -83,15 +82,14 @@ function ShippingAddress() {
       try {
         // Assuming validateCoupon is the function that validates the coupon
         let couponResult = await validateCoupon(couponValue);
-     
+
         if (couponResult.valid) {
-          let discountedPrice = priceT - 0.1 * priceT;
-          setPriceT(discountedPrice);
-         toast.success(couponResult.message)
-        }else{
-          toast.error(couponResult.message)
+          let discountedPrice = totalPrice - 0.1 * totalPrice;
+          setTotalPrice(discountedPrice);
+          toast.success(couponResult.message);
+        } else {
+          toast.error(couponResult.message);
         }
-        
       } catch (error) {
         console.error("Error validating coupon:", error);
         // Handle error, show error message, etc.
@@ -139,15 +137,15 @@ function ShippingAddress() {
           name="email"
           onChange={handleUserInput}
         />
-        <div className="coupan">
+        <div className="coupon">
           <input
             type="text"
             placeholder="APPLY Coupon"
-            name="coupan"
+            name="coupon"
             value={couponValue} // Control the input with React state
             onChange={handleUserInput}
           />
-          <button onClick={handleApplyCoupan} className="coupan-btn">
+          <button onClick={handleApplyCoupan} className="coupon-btn">
             Apply
           </button>
         </div>

@@ -3,7 +3,7 @@ const CartContext = createContext(null);
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [priceT, setPriceT] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   function addToCart(addedProduct) {
     let newCartValue = [];
@@ -28,7 +28,7 @@ function CartProvider({ children }) {
       removeFromCart(id);
       return;
     }
-    if (newQty > 20) return;
+    if (newQty > 100) return;
     let newCartValue = cart.map((product) => {
       if (product.id === id) {
         return { ...product, qty: newQty };
@@ -46,14 +46,15 @@ function CartProvider({ children }) {
   function emptyCart() {
     setCart([]);
   }
+
   let contextValue = {
     cart,
     addToCart,
     removeFromCart,
     addProductQuantity,
     emptyCart,
-    priceT,
-    setPriceT,
+    totalPrice,
+    setTotalPrice,
   };
 
   return (
