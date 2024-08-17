@@ -3,7 +3,7 @@ const CartContext = createContext(null);
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [priceT, setPriceT] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   function addToCart(addedProduct) {
     let newCartValue = [];
@@ -52,8 +52,8 @@ function CartProvider({ children }) {
     removeFromCart,
     addProductQuantity,
     emptyCart,
-    priceT,
-    setPriceT,
+    totalPrice,
+    setTotalPrice,
   };
 
   return (
