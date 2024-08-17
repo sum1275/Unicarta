@@ -3,7 +3,7 @@ import { CartContext } from "../../context/CartProvider";
 import "./OrderSummary.css";
 
 function OrderSummary() {
-  let { cart,totalPrice, setTotalPrice } =
+  let { cart, totalPrice, setTotalPrice } =
     useContext(CartContext);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function OrderSummary() {
     }, 0);
     setTotalPrice(total);
   }, [cart, setTotalPrice]);
-  
+
   let allSoloProducts = cart.map((product) => {
     return <SoloBill product={product} key={product.id} />;
   });

@@ -4,8 +4,10 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+
 import CartProvider from "./context/CartProvider";
 import RootLayout from "./layout/RootLayout";
+
 import Home from "./pages/Home";
 import ExploreProduct from "./pages/ExploreProducts";
 import Product from "./pages/Product";

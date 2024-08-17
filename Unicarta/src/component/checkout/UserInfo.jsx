@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { CartContext } from "../../context/CartProvider";
 import { checkout, validateCoupon } from "../../service/fetchFromApi";
 import "./UserInfo.css";
-
 
 function UserInfo() {
   return (
@@ -45,13 +44,10 @@ function ShippingAddress() {
       return;
     }
 
-    // code test
     try {
-      // Call the checkout function with userData
       const userData = formData;
       const data = await checkout(userData);
 
-      // Handle the response as needed
       console.log("Checkout Response:", data);
 
       emptyCart();
@@ -59,9 +55,7 @@ function ShippingAddress() {
       navigate("/");
     } catch (error) {
       console.error("Error during checkout:", error);
-      // Handle error, show error message, etc.
     }
-    // code test
 
     navigate("/");
   }
@@ -80,7 +74,6 @@ function ShippingAddress() {
   async function handleApplyCoupan() {
     if (couponValue !== "") {
       try {
-        // Assuming validateCoupon is the function that validates the coupon
         let couponResult = await validateCoupon(couponValue);
 
         if (couponResult.valid) {
@@ -92,7 +85,6 @@ function ShippingAddress() {
         }
       } catch (error) {
         console.error("Error validating coupon:", error);
-        // Handle error, show error message, etc.
       }
     } else {
       console.log("No coupon code entered");
@@ -142,7 +134,7 @@ function ShippingAddress() {
             type="text"
             placeholder="APPLY Coupon"
             name="coupon"
-            value={couponValue} // Control the input with React state
+            value={couponValue}
             onChange={handleUserInput}
           />
           <button onClick={handleApplyCoupan} className="coupon-btn">
