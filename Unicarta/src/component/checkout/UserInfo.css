@@ -26,8 +26,8 @@
   gap: var(--gap);
 }
 
-#firstname,
-#lastname {
+#firstName,
+#lastName {
   width: calc(50% - calc(var(--gap) / 2));
 }
 .checkout-btn {
@@ -44,14 +44,14 @@
 .checkout-btn:hover {
   background-color: #303030;
 }
-.coupan {
+.coupon {
   display: flex;
   flex-direction: row;
   align-items: flex-start; /* Updated to align items to the start */
   
 }
 
-.coupan-btn {
+.coupon-btn {
   width: 60%;
   padding: 10px;
   color: white;
