@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import { fetchFromApi } from "../service/fetchFromApi";
 import ProductView from "../component/product/ProductView";
-
 import "./Product.css";
 
 function Product() {

@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
 import { CartContext } from "../../context/CartProvider";
-import { checkout, validateCoupon } from "../../service/fetchFromApi";
+import { validateCoupon } from "../../service/fetchFromApi";
 import "./UserInfo.css";
 
 function UserInfo() {
@@ -18,134 +19,121 @@ function ShippingAddress() {
   const { emptyCart, cart, setTotalPrice, totalPrice } =
     useContext(CartContext);
   const [couponValue, setCouponValue] = useState("");
- 
 
-  const [formData, setFormData] = useState({
-    fname: "",
-    lname: "",
-    address: "",
-    city: "",
-    email: "",
-    coupon: couponValue,
-    cartdata: cart,
-    totalPrice: totalPrice,
-  });
+  const { register, handleSubmit } = useForm();
 
   let navigate = useNavigate();
 
-  async function checkoutHandler() {
-    if (cart.length < 1) {
-      toast.error("Your shopping list is Empty");
+  const checkoutHandler = async (data) => {
+    const { ...rest } = data;
+
+    if (cart?.length < 1) {
+      toast.error("Your shopping cart is empty.");
       return;
     }
 
-    if (totalPrice < 1) {
-      toast.error("Cannot process order value of zero(0).");
+    if (totalPrice <= 0) {
+      toast.error("Cannot process an order with a value of zero (0).");
       return;
     }
 
     try {
-      const userData = formData;
-      const data = await checkout(userData);
+      const checkoutData = {
+        ...rest,
+        coupon: couponValue ?? "",
+        cart: cart ?? [],
+        totalPrice: totalPrice ?? 0,
+      };
 
-      console.log("Checkout Response:", data);
+      console.log("Checkout Data:", checkoutData);
 
       emptyCart();
-      toast.success("Checked out");
-      navigate("/");
+      toast.success("You have successfully checked out.");
     } catch (error) {
       console.error("Error during checkout:", error);
-    }
-
-    navigate("/");
-  }
-
-  const handleUserInput = (event) => {
-    const { name, value } = event.target;
-    if (name === "coupon") {
-      setCouponValue(value); 
-      setFormData((prev) => ({ ...prev, coupon: value })); 
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      toast.error("An error occurred during checkout. Please try again later.");
+    } finally {
+      navigate("/");
     }
   };
 
-  console.log({ formData });
-  async function handleApplyCoupan() {
+  const handleApplyCoupon = async (event) => {
+    event.preventDefault();
+
     if (couponValue !== "") {
       try {
-        let couponResult = await validateCoupon(couponValue);
-
-        if (couponResult.valid) {
-          let discountedPrice = totalPrice - 0.1 * totalPrice;
+        const couponResult = await validateCoupon(couponValue);
+        if (couponResult && couponResult.percent) {
+          const discountedPrice =
+            totalPrice - couponResult.percent * totalPrice;
           setTotalPrice(discountedPrice);
           toast.success(couponResult.message);
         } else {
-          toast.error(couponResult.message);
+          toast.error(couponResult?.message || "Invalid coupon.");
         }
       } catch (error) {
         console.error("Error validating coupon:", error);
+        toast.error("Failed to validate the coupon. Please try again.");
       }
     } else {
-      console.log("No coupon code entered");
+      toast.error("Please enter a coupon code.");
     }
-  }
+  };
 
   return (
     <div className="shipping-address_container">
       <h3>Shipping Address</h3>
-      <div className="shipping-address_wrapper">
-        <input
-          type="name"
-          placeholder="First name"
-          id="firstname"
-          name="fname"
-          onChange={handleUserInput}
-        />
-        <input
-          type="name"
-          placeholder="Last name"
-          id="lastname"
-          name="lname"
-          onChange={handleUserInput}
-        />
-        <input
-          type="name"
-          placeholder="Address"
-          id="address"
-          name="address"
-          onChange={handleUserInput}
-        />
-        <input
-          type="name"
-          placeholder="City"
-          id="city"
-          name="city"
-          onChange={handleUserInput}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          onChange={handleUserInput}
-        />
-        <div className="coupon">
+      <form onSubmit={handleSubmit(checkoutHandler)}>
+        <div className="shipping-address_wrapper">
           <input
             type="text"
-            placeholder="APPLY Coupon"
-            name="coupon"
-            value={couponValue}
-            onChange={handleUserInput}
+            placeholder="First name"
+            id="firstName"
+            {...register("firstName", { required: true })}
           />
-          <button onClick={handleApplyCoupan} className="coupon-btn">
-            Apply
+          <input
+            type="text"
+            placeholder="Last name"
+            id="lastName"
+            {...register("lastName", { required: true })}
+          />
+          <input
+            type="text"
+            placeholder="Address"
+            id="address"
+            {...register("address", { required: true })}
+          />
+          <input
+            type="text"
+            placeholder="City"
+            id="city"
+            {...register("city", { required: true })}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            {...register("email", { required: true })}
+          />
+          <div className="coupon">
+            <input
+              type="text"
+              placeholder="APPLY Coupon"
+              value={couponValue}
+              onChange={(e) => setCouponValue(e.target.value)}
+            />
+            <button
+              onClick={(event) => handleApplyCoupon(event)}
+              className="coupon-btn"
+            >
+              Apply
+            </button>
+          </div>
+
+          <button className="checkout-btn" type="submit">
+            Checkout
           </button>
         </div>
-
-        <button className="checkout-btn" onClick={checkoutHandler}>
-          Checkout
-        </button>
-      </div>
+      </form>
     </div>
   );
 }

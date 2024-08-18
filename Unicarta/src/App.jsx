@@ -4,16 +4,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import CartProvider from "./context/CartProvider";
 import RootLayout from "./layout/RootLayout";
-
 import Home from "./pages/Home";
 import ExploreProduct from "./pages/ExploreProducts";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
 
-import { Toaster } from "react-hot-toast";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(

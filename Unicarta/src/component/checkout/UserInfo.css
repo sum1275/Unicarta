@@ -26,8 +26,8 @@
   gap: var(--gap);
 }
 
-#firstname,
-#lastname {
+#firstName,
+#lastName {
   width: calc(50% - calc(var(--gap) / 2));
 }
 .checkout-btn {
