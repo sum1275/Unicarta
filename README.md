@@ -1,8 +1,11 @@
 # Unicarta
 
-Unicarta is the frontend part of a E-commerce Website
+Unicarta is an E-Commerce Website
 
 ![Unicarta Interface](https://i.ibb.co/qjPJbTr/1.png)
+![image](https://github.com/user-attachments/assets/7dc2e075-f314-46b4-a9f9-742c1fd4f63c)
+![image](https://github.com/user-attachments/assets/b3934e35-aa73-4488-ada4-88e1b6ea4e23)
+![image](https://github.com/user-attachments/assets/e7ca76d4-732f-4e73-992f-0cdd72384d1e)
 
 ## Problem Statement
 
@@ -15,11 +18,11 @@ To designing and implementing an e-commerce store with the following functionali
 
 ### Special Offers:
 
-- Discount Codes: Every nth order receives a coupon code for a 10% discount, which can be applied to their cart.
+- Discount Codes: Only code which is working is **10%Off** for 10% Discount
 
 ### Admin Features:
 
-- Generate Discount Code: Automatically generates a discount code when the nth order condition is satisfied.
+
 - Analytics:
 
   - Lists the count of items purchased.
@@ -29,8 +32,8 @@ To designing and implementing an e-commerce store with the following functionali
 
 ### Stretch Goals:
 
-- UI Development: Building a user interface to showcase the above functionalities (optional).
-- API Testing: For backend engineers, submitting Postman, REST client, or equivalent API tests is recommended.
+- [ ] UI Development: Building a user interface to showcase the above functionalities (optional).
+- [ ] API Testing: For backend engineers, submitting Postman, REST client, or equivalent API tests is recommended.
 
 ## Setting up the Frontend in Local Environment
 
